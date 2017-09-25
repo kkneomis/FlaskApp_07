@@ -1,2 +1,2 @@
 # FlaskApp_05
-Getting started with sqlalchemy
+Connecting to a database. Creating people objects using sqlachemy and showing them in the view.

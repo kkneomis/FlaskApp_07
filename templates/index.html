@@ -5,7 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-    <p>First Name: {{ person.firstname}}</p>
-    <p>Last Name: {{ person.lastname}}</p>
+    <h4>These are the coolest people</h4>
+    <ol>
+    {% for person in people %}
+            <li>{{ person.firstname}}, {{ person.lastname}}</li>
+    {% endfor %}
+    </ol>
 </body>
 </html>
