@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -6,16 +6,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flaskr.db'
 db = SQLAlchemy(app)
 
 @app.route('/')
-def hello_world():
-
-    people = [
-        Person("LeBron", "James"),
-        Person("Barack", "Obama"),
-        Person("Bill", "Gates")
-    ]
-
+def index():
+    people = Person.query.all()
     return render_template("index.html", people = people)
 
+
+@app.route('/add')
+def add():
+    return render_template("form.html")
+
+
+@app.route('/processform', methods=['GET','POST'])
+def processform():
+    firstname = request.form['first']
+    lastname = request.form['last']
+    person = Person(firstname,lastname)
+    db.session.add(person)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
