@@ -10,18 +10,47 @@ def index():
     people = Person.query.all()
     return render_template("index.html", people = people)
 
-
 @app.route('/add')
 def add():
     return render_template("form.html")
 
+@app.route('/show/<int:id>')
+def show(id):
+    person = Person.query.get(id)
+    return render_template("show.html", person = person)
+
+
+@app.route('/edit/<int:id>')
+def edit(id):
+    person = Person.query.get(id)
+    return render_template("form.html", person=person)
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    person = Person.query.get(id)
+    db.session.delete(person)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 @app.route('/processform', methods=['GET','POST'])
 def processform():
+
+    try:
+        id = request.form['id']
+    except:
+        id = None
+
     firstname = request.form['first']
     lastname = request.form['last']
-    person = Person(firstname,lastname)
-    db.session.add(person)
+
+    if id:
+        person = Person.query.get(id)
+        person.firstname = firstname
+        person.lastname = lastname
+    else:
+        person = Person(firstname,lastname)
+        db.session.add(person)
+
     db.session.commit()
     return redirect(url_for('index'))
 

@@ -1,2 +1,2 @@
-# FlaskApp_06
-Creating objects in a database using a form.
+# FlaskApp_07
+Completing the cycle with show, edit, and delete for a record.
